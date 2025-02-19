@@ -15,29 +15,34 @@ public class ProductBasket {
         System.out.println("Невозможно добавить продукт");
     }
 
-    public int getTotalCost() {
+    private int calculateAndPrintBasketContents(boolean printBasketContents) {
         int total = 0;
+        int count = 0;
         for (Product product : products) {
             if (product != null) {
                 total += product.getCost();
+                if (printBasketContents) {
+                    System.out.println(product.getName() + ": " + product.getCost());
+                }
+                count++;
+            }
+        }
+        if (printBasketContents) {
+            if (count == 0) {
+                System.out.println("в корзине пусто");
+            } else {
+                System.out.println("Итого: " + total);
             }
         }
         return total;
     }
 
     public void printBasket() {
-        int count = 0;
-        for (Product product : products) {
-            if (product != null) {
-                System.out.println(product.getName() + ": " + product.getCost());
-                count++;
-            }
-        }
-        if (count == 0) {
-            System.out.println("в корзине пусто");
-        } else {
-            System.out.println("Итого: " + getTotalCost());
-        }
+        calculateAndPrintBasketContents(true);
+    }
+
+    public int getTotalCost() {
+        return calculateAndPrintBasketContents(false);
     }
 
     public boolean checkProductByName(String name) {
