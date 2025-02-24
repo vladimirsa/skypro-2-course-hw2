@@ -17,12 +17,16 @@ public class ProductBasket {
 
     private int calculateAndPrintBasketContents(boolean printBasketContents) {
         int total = 0;
+        int specialCount = 0;
         int count = 0;
         for (Product product : products) {
             if (product != null) {
                 total += product.getCost();
                 if (printBasketContents) {
-                    System.out.println(product.getName() + ": " + product.getCost());
+                    System.out.println(product.toString());
+                }
+                if (product.isSpecial()) {
+                    specialCount++;
                 }
                 count++;
             }
@@ -32,6 +36,7 @@ public class ProductBasket {
                 System.out.println("в корзине пусто");
             } else {
                 System.out.println("Итого: " + total);
+                System.out.println("Специальных товаров: " + specialCount);
             }
         }
         return total;
