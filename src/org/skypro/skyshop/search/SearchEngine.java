@@ -30,4 +30,34 @@ public class SearchEngine {
 
         return results;
     }
+    public Searchable findBestMatch(String search) {
+        Searchable bestMatch = null;
+        int maxCount = 0;
+
+        for (int i = 0; i < size; i++) {
+            int count = countOccurrences(items[i].getSearchTerm().toLowerCase(), search.toLowerCase());
+            if (count > maxCount) {
+                maxCount = count;
+                bestMatch = items[i];
+            }
+        }
+
+        if (bestMatch == null) {
+            throw new BestResultNotFound(search);
+        }
+
+        return bestMatch;
+    }
+
+    private int countOccurrences(String str, String substring) {
+        int count = 0;
+        int index = 0;
+        while ((index = str.indexOf(substring, index)) != -1) {
+            count++;
+            index += substring.length();
+        }
+        return count;
+    }
+
+
 }
