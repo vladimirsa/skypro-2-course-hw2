@@ -16,6 +16,7 @@ public class App {
         ProductBasket basket = new ProductBasket();
 
         SimpleProduct bread = new SimpleProduct("Хлеб", 50);
+
         try {
             SimpleProduct emptyNameProduct = new SimpleProduct("", 50);
             System.out.println("Created: " + emptyNameProduct);
@@ -29,25 +30,30 @@ public class App {
         } catch (IllegalArgumentException e) {
             System.out.println("Error creating DiscountedProduct: " + e.getMessage());
         }
+
         try {
             SimpleProduct invalidBread = new SimpleProduct("Хлеб", 0);
             System.out.println("Created: " + invalidBread);
         } catch (IllegalArgumentException e) {
             System.out.println("Error creating SimpleProduct: " + e.getMessage());
         }
+
         DiscountedProduct milk = new DiscountedProduct("Молоко", 75, 10);
+
         try {
             DiscountedProduct invalidMilk1 = new DiscountedProduct("Молоко", -10, 20);
             System.out.println("Created: " + invalidMilk1);
         } catch (IllegalArgumentException e) {
             System.out.println("Error creating DiscountedProduct: " + e.getMessage());
         }
+
         try {
             DiscountedProduct invalidMilk2 = new DiscountedProduct("Молоко", 100, 110);
             System.out.println("Created: " + invalidMilk2);
         } catch (IllegalArgumentException e) {
             System.out.println("Error creating DiscountedProduct: " + e.getMessage());
         }
+
         FixPriceProduct cheese = new FixPriceProduct("Сыр");
         SimpleProduct eggs = new SimpleProduct("Яйца", 120);
         SimpleProduct butter = new SimpleProduct("Масло", 180);
