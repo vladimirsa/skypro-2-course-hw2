@@ -1,30 +1,25 @@
 package org.skypro.skyshop.search;
 
-public class SearchEngine {
-    private final Searchable[] items;
-    private int size = 0;
+import java.util.ArrayList;
+import java.util.List;
 
-    public SearchEngine(int capacity) {
-        this.items = new Searchable[capacity];
+public class SearchEngine {
+    private final List<Searchable> items;
+
+    public SearchEngine() {
+        this.items = new ArrayList<>();
     }
 
     public void add(Searchable item) {
-        if (size < items.length) {
-            items[size++] = item;
-        }
+        items.add(item);
     }
 
-    public Searchable[] search(String query) {
-        Searchable[] results = new Searchable[5];
-        int resultCount = 0;
+    public List<Searchable> search(String query) {
+        List<Searchable> results = new ArrayList<>();
 
-        for (int i = 0; i < size; i++) {
-            if (items[i].getSearchTerm().toLowerCase().contains(query.toLowerCase())) {
-                results[resultCount++] = items[i];
-
-                if (resultCount >= 5) {
-                    break;
-                }
+        for (Searchable item : items) {
+            if (item.getSearchTerm().toLowerCase().contains(query.toLowerCase())) {
+                results.add(item);
             }
         }
 
@@ -34,11 +29,11 @@ public class SearchEngine {
         Searchable bestMatch = null;
         int maxCount = 0;
 
-        for (int i = 0; i < size; i++) {
-            int count = countOccurrences(items[i].getSearchTerm().toLowerCase(), search.toLowerCase());
+        for (Searchable item : items) {
+            int count = countOccurrences(item.getSearchTerm().toLowerCase(), search.toLowerCase());
             if (count > maxCount) {
                 maxCount = count;
-                bestMatch = items[i];
+                bestMatch = item;
             }
         }
 
