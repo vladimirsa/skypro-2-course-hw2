@@ -3,19 +3,21 @@ package org.skypro.skyshop;
 import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixPriceProduct;
+import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
 import org.skypro.skyshop.article.Article;
 import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
 import org.skypro.skyshop.search.BestResultNotFound;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class App {
     public static void main(String[] args) {
         ProductBasket basket = new ProductBasket();
 
         SimpleProduct bread = new SimpleProduct("Хлеб", 50);
+
         try {
             SimpleProduct emptyNameProduct = new SimpleProduct("", 50);
             System.out.println("Created: " + emptyNameProduct);
@@ -29,25 +31,30 @@ public class App {
         } catch (IllegalArgumentException e) {
             System.out.println("Error creating DiscountedProduct: " + e.getMessage());
         }
+
         try {
             SimpleProduct invalidBread = new SimpleProduct("Хлеб", 0);
             System.out.println("Created: " + invalidBread);
         } catch (IllegalArgumentException e) {
             System.out.println("Error creating SimpleProduct: " + e.getMessage());
         }
+
         DiscountedProduct milk = new DiscountedProduct("Молоко", 75, 10);
+
         try {
             DiscountedProduct invalidMilk1 = new DiscountedProduct("Молоко", -10, 20);
             System.out.println("Created: " + invalidMilk1);
         } catch (IllegalArgumentException e) {
             System.out.println("Error creating DiscountedProduct: " + e.getMessage());
         }
+
         try {
             DiscountedProduct invalidMilk2 = new DiscountedProduct("Молоко", 100, 110);
             System.out.println("Created: " + invalidMilk2);
         } catch (IllegalArgumentException e) {
             System.out.println("Error creating DiscountedProduct: " + e.getMessage());
         }
+
         FixPriceProduct cheese = new FixPriceProduct("Сыр");
         SimpleProduct eggs = new SimpleProduct("Яйца", 120);
         SimpleProduct butter = new SimpleProduct("Масло", 180);
@@ -61,7 +68,8 @@ public class App {
         basket.printBasket();
         basket.getTotalCost();
 
-        SearchEngine searchEngine = new SearchEngine(10);
+
+        SearchEngine searchEngine = new SearchEngine();
         searchEngine.add(bread);
         searchEngine.add(milk);
         searchEngine.add(cheese);
@@ -101,14 +109,37 @@ public class App {
         } catch (BestResultNotFound e) {
             System.out.println("Error: " + e.getMessage());
         }
+
+        List<Product> removedProducts = basket.removeProductsByName("Молоко");
+        System.out.println("\nУбранные продукты:");
+        for (Product product : removedProducts) {
+            System.out.println(product);
+        }
+
+        System.out.println("\nКорзина после удаления продукта:");
+        basket.printBasket();
+
+        removedProducts = basket.removeProductsByName("Не существующий продукт");
+        if (removedProducts.isEmpty()) {
+            System.out.println("\nСписок пуст");
+        } else {
+            System.out.println("\nУбранные продукты:");
+            for (Product product : removedProducts) {
+                System.out.println(product);
+            }
+        }
+
+        System.out.println("\nКорзина после удаления несуществующего продукта:");
+        basket.printBasket();
     }
 
 
-    private static void printSearchResults(Searchable[] results) {
+    private static void printSearchResults(List<Searchable> results) {
         for (Searchable item : results) {
             if (item != null) {
                 System.out.println(item.getStringRepresentation());
             }
         }
     }
+
 }
