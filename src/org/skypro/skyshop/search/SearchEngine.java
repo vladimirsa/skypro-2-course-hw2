@@ -1,32 +1,34 @@
 package org.skypro.skyshop.search;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.Comparator;
 
 public class SearchEngine {
-    private final List<Searchable> items;
+    private final Set<Searchable> items;
 
-    public SearchEngine() {
-        this.items = new ArrayList<>();
-    }
+        public SearchEngine() {
+            this.items = new HashSet<>();
+        }
 
     public void add(Searchable item) {
         items.add(item);
     }
 
-    public Map<String, Searchable> search(String query) {
-        Map<String, Searchable> results = new TreeMap<>();
+    public SortedSet<Searchable> search(String query) {
+        SortedSet<Searchable> results = new TreeSet<>(new SearchableComparator());
 
         for (Searchable item : items) {
             if (item.getSearchTerm().toLowerCase().contains(query.toLowerCase())) {
-                results.put(item.getName(), item);
+                results.add(item);
             }
         }
 
         return results;
     }
+
     public Searchable findBestMatch(String search) {
         Searchable bestMatch = null;
         int maxCount = 0;
@@ -54,6 +56,17 @@ public class SearchEngine {
             index += substring.length();
         }
         return count;
+    }
+
+    private static class SearchableComparator implements Comparator<Searchable> {
+        @Override
+        public int compare(Searchable s1, Searchable s2) {
+            int lengthComparison = Integer.compare(s2.getSearchTerm().length(), s1.getSearchTerm().length());
+            if (lengthComparison != 0) {
+                return lengthComparison;
+            }
+            return s1.getSearchTerm().compareTo(s2.getSearchTerm());
+        }
     }
 
 
