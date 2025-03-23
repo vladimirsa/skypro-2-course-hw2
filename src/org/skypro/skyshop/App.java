@@ -11,6 +11,7 @@ import org.skypro.skyshop.search.Searchable;
 import org.skypro.skyshop.search.BestResultNotFound;
 
 import java.util.List;
+import java.util.Map;
 
 public class App {
     public static void main(String[] args) {
@@ -134,10 +135,10 @@ public class App {
     }
 
 
-    private static void printSearchResults(List<Searchable> results) {
-        for (Searchable item : results) {
-            if (item != null) {
-                System.out.println(item.getStringRepresentation());
+    private static void printSearchResults(Map<String, Searchable> results) {
+        for (Map.Entry<String, Searchable> entry : results.entrySet()) {
+            if (entry.getValue() != null) {
+                System.out.println(entry.getValue().getStringRepresentation());
             }
         }
     }
