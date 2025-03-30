@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public class SearchEngine {
     private final Set<Searchable> items;
@@ -18,15 +19,9 @@ public class SearchEngine {
     }
 
     public SortedSet<Searchable> search(String query) {
-        SortedSet<Searchable> results = new TreeSet<>(new SearchableComparator());
-
-        for (Searchable item : items) {
-            if (item.getSearchTerm().toLowerCase().contains(query.toLowerCase())) {
-                results.add(item);
-            }
-        }
-
-        return results;
+        return items.stream()
+                .filter(item -> item.getSearchTerm().toLowerCase().contains(query.toLowerCase()))
+                .collect(Collectors.toCollection(() -> new TreeSet<>(new SearchableComparator())));
     }
 
     public Searchable findBestMatch(String search) {
